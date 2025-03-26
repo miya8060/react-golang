@@ -9,8 +9,8 @@ RUN go mod download && go mod verify
 
 COPY . .
 
-RUN go build -o /usr/local/bin/main .
+RUN go build -v -o /usr/local/bin/main .
 
 EXPOSE 8080
 
-CMD ["main"]
+CMD ["/usr/local/bin/main"]
