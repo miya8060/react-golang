@@ -9,6 +9,8 @@ RUN go mod download && go mod verify
 
 # airのインストール
 RUN go install github.com/air-verse/air@latest
+# sqlcのインストール
+RUN go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 
 COPY . .
 
