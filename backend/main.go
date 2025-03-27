@@ -14,10 +14,11 @@ func main() {
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
 	r.Use(cors.New(config))
 
-	// ルートハンドラー
-	r.GET("/", func(c *gin.Context) {
+	// テスト用エンドポイント
+	r.GET("/api/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "Welcome to the CRUD API",
+			"status":  "ok",
+			"message": "Hello from Go backend!!!!!!!!!",
 		})
 	})
 
