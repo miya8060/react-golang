@@ -16,4 +16,5 @@ COPY . .
 
 EXPOSE 5173
 
-CMD ["pnpm", "dev"]
+# --hostフラグを追加してすべてのネットワークインターフェースでリッスン
+CMD ["pnpm", "dev", "--host"]
