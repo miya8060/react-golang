@@ -18,7 +18,7 @@ func main() {
 	r.GET("/api/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"status":  "ok",
-			"message": "Hello from Go backend!!!!!!!!!",
+			"message": "Hello from Go backend!!!!!!!!!!!!!",
 		})
 	})
 

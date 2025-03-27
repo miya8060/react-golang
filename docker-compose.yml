@@ -17,6 +17,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    volumes:
+      - ./backend:/app
     environment:
       - DB_HOST=postgres
       - DB_USER=postgres
