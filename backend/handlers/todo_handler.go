@@ -9,15 +9,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type TodoHandler struct {
+var _ TodoHandler = (*TodoHandlerImpl)(nil)
+
+type TodoHandlerImpl struct {
 	queries *sqlc.Queries
 }
 
-func NewTodoHandler(queries *sqlc.Queries) *TodoHandler {
-	return &TodoHandler{queries: queries}
+func NewTodoHandler(queries *sqlc.Queries) TodoHandler {
+	return &TodoHandlerImpl{queries: queries}
 }
 
-func (h *TodoHandler) ListTodos(c *gin.Context) {
+func (h *TodoHandlerImpl) ListTodos(c *gin.Context) {
 	todos, err := h.queries.ListTodos(c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -26,7 +28,7 @@ func (h *TodoHandler) ListTodos(c *gin.Context) {
 	c.JSON(http.StatusOK, todos)
 }
 
-func (h *TodoHandler) CreateTodo(c *gin.Context) {
+func (h *TodoHandlerImpl) CreateTodo(c *gin.Context) {
 	if c.GetHeader("Content-Type") != "application/json" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Content-Type must be application/json"})
 		return
@@ -48,7 +50,7 @@ func (h *TodoHandler) CreateTodo(c *gin.Context) {
 	c.JSON(http.StatusCreated, todo)
 }
 
-func (h *TodoHandler) DeleteTodo(c *gin.Context) {
+func (h *TodoHandlerImpl) DeleteTodo(c *gin.Context) {
 	idStr := c.Param("id")
 	var id int32
 	if _, err := fmt.Sscanf(idStr, "%d", &id); err != nil {

@@ -17,7 +17,7 @@ func setupRouter(queries *sqlc.Queries) *gin.Engine {
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
 	r.Use(cors.New(config))
 
-	todoHandler := handlers.NewTodoHandler(queries)
+	var todoHandler handlers.TodoHandler = handlers.NewTodoHandler(queries)
 
 	api := r.Group("/api")
 	{
