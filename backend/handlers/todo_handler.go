@@ -12,10 +12,10 @@ import (
 var _ TodoHandler = (*TodoHandlerImpl)(nil)
 
 type TodoHandlerImpl struct {
-	queries *sqlc.Queries
+	queries sqlc.Querier
 }
 
-func NewTodoHandler(queries *sqlc.Queries) TodoHandler {
+func NewTodoHandler(queries sqlc.Querier) TodoHandler {
 	return &TodoHandlerImpl{queries: queries}
 }
 
