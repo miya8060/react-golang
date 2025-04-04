@@ -84,7 +84,9 @@ function App() {
           placeholder="新しいTodoを入力"
           required
         />
-        <button type="submit">追加</button>
+        <button type="submit" style={{ marginLeft: "10px" }}>
+          追加
+        </button>
       </form>
 
       {error && (
