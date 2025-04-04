@@ -63,3 +63,35 @@ func (h *TodoHandlerImpl) DeleteTodo(c *gin.Context) {
 	}
 	c.Status(http.StatusNoContent)
 }
+
+func (h *TodoHandlerImpl) UpdateTodo(c *gin.Context) {
+	idStr := c.Param("id")
+	var id int32
+	if _, err := fmt.Sscanf(idStr, "%d", &id); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id format"})
+		return
+	}
+
+	if c.GetHeader("Content-Type") != "application/json" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Content-Type must be application/json"})
+		return
+	}
+
+	var req struct {
+		Title string `json:"title" binding:"required,min=1"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	todo, err := h.queries.UpdateTodo(c, sqlc.UpdateTodoParams{
+		ID:    id,
+		Title: req.Title,
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, todo)
+}

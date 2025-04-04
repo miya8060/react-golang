@@ -17,3 +17,9 @@ RETURNING *;
 -- name: DeleteTodo :exec
 DELETE FROM todos
 WHERE id = $1;
+
+-- name: UpdateTodo :one
+UPDATE todos
+SET title = $2
+WHERE id = $1
+RETURNING *;

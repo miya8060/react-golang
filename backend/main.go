@@ -33,6 +33,7 @@ func setupRouter(queries *sqlc.Queries) *gin.Engine {
 			todos.GET("", todoHandler.ListTodos)
 			todos.POST("", todoHandler.CreateTodo)
 			todos.DELETE("/:id", todoHandler.DeleteTodo)
+			todos.PUT("/:id", todoHandler.UpdateTodo)
 		}
 	}
 

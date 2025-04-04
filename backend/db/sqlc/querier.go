@@ -13,6 +13,7 @@ type Querier interface {
 	DeleteTodo(ctx context.Context, id int32) error
 	GetTodo(ctx context.Context, id int32) (Todo, error)
 	ListTodos(ctx context.Context) ([]Todo, error)
+	UpdateTodo(ctx context.Context, arg UpdateTodoParams) (Todo, error)
 }
 
 var _ Querier = (*Queries)(nil)
