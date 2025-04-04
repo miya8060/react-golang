@@ -1,7 +1,7 @@
+import { todoApi } from "@/api/todo";
+import "@/App.css";
+import { Todo } from "@/types/todo";
 import { useEffect, useState } from "react";
-import { todoApi } from "./api/todo";
-import "./App.css";
-import { Todo } from "./types/todo";
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
