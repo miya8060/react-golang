@@ -8,6 +8,10 @@ function App() {
   const [newTodoTitle, setNewTodoTitle] = useState("");
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
+  const [editingTodo, setEditingTodo] = useState<{
+    id: number;
+    title: string;
+  } | null>(null);
 
   const fetchTodos = async () => {
     try {
@@ -46,6 +50,21 @@ function App() {
     } catch (error) {
       setError(`Todoの削除に失敗しました: ${(error as Error).message}`);
       console.error("Error deleting todo:", error);
+    }
+  };
+
+  const handleUpdateTodo = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingTodo || !editingTodo.title.trim()) return;
+
+    try {
+      setError("");
+      await todoApi.update(editingTodo.id, editingTodo.title);
+      setEditingTodo(null);
+      await fetchTodos();
+    } catch (error) {
+      setError(`Todoの更新に失敗しました: ${(error as Error).message}`);
+      console.error("Error updating todo:", error);
     }
   };
 
@@ -90,13 +109,46 @@ function App() {
                   border: "1px solid #ddd",
                 }}
               >
-                {todo.title}
-                <button
-                  onClick={() => handleDeleteTodo(todo.id)}
-                  style={{ marginLeft: "10px" }}
-                >
-                  削除
-                </button>
+                {editingTodo?.id === todo.id ? (
+                  <form
+                    onSubmit={handleUpdateTodo}
+                    style={{ display: "inline" }}
+                  >
+                    <input
+                      type="text"
+                      value={editingTodo.title}
+                      onChange={(e) =>
+                        setEditingTodo({
+                          ...editingTodo,
+                          title: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                    <button type="submit">更新</button>
+                    <button type="button" onClick={() => setEditingTodo(null)}>
+                      キャンセル
+                    </button>
+                  </form>
+                ) : (
+                  <>
+                    {todo.title}
+                    <button
+                      onClick={() =>
+                        setEditingTodo({ id: todo.id, title: todo.title })
+                      }
+                      style={{ marginLeft: "10px" }}
+                    >
+                      編集
+                    </button>
+                    <button
+                      onClick={() => handleDeleteTodo(todo.id)}
+                      style={{ marginLeft: "10px" }}
+                    >
+                      削除
+                    </button>
+                  </>
+                )}
               </li>
             ))
           ) : (

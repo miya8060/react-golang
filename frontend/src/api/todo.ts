@@ -33,4 +33,18 @@ export const todoApi = {
       throw new Error("Todoの削除に失敗しました");
     }
   },
+
+  update: async (id: number, title: string): Promise<Todo> => {
+    const response = await fetch(`${API_BASE_URL}/todos/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title }),
+    });
+    if (!response.ok) {
+      throw new Error("Todoの更新に失敗しました");
+    }
+    return response.json();
+  },
 };
